@@ -1,5 +1,4 @@
 ﻿using ATM.Context;
-using State.State;
 using System;
 
 namespace ATM.State
@@ -68,6 +67,11 @@ namespace ATM.State
         private bool IsInvalidAmount(int amount)
         {
             return amount > _atmMachine.Balance;
+        }
+
+        public string GetStateName()
+        {
+            return nameof(HasCorrectPinState);
         }
     }
 }

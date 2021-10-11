@@ -1,4 +1,5 @@
 ﻿using ATM.Context;
+using ATM.Proxy;
 using System;
 
 namespace UI
@@ -7,12 +8,27 @@ namespace UI
     {
         static void Main(string[] args)
         {
-            StatePattern();
+            var realAtm = RealAtmUseCase();
+
+            Console.WriteLine("---- ---- ---- ----");
+
+            ProxyAtmUseCase(realAtm);
         }
 
-        static void StatePattern()
+        private static void ProxyAtmUseCase(AtmMachine realAtm)
         {
-            const int initialBalance = 2000;
+            var proxy = new AtmProxy(realAtm);
+
+            var balance = proxy.GetBalance();
+            Console.WriteLine($"The current balance is {balance}");
+
+            var currentState = proxy.GetData();
+            Console.WriteLine($"The current state is {currentState.GetStateName()}");
+        }
+
+        static AtmMachine RealAtmUseCase()
+        {
+            const int initialBalance = 15000;
             var atm = new AtmMachine(initialBalance);
 
             atm.InsertCard();
@@ -43,6 +59,8 @@ namespace UI
 
             Console.WriteLine($"The new Balance should be {initialBalance - amountToWithdrawal}");
             Console.WriteLine($"The actual Balance is {actualBalance}");
+
+            return atm;
         }
     }
 }

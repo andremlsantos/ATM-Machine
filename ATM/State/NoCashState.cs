@@ -1,5 +1,4 @@
 ﻿using ATM.Context;
-using State.State;
 using System;
 
 namespace ATM.State
@@ -35,6 +34,11 @@ namespace ATM.State
         {
             Console.WriteLine("You do not have enough money");
             Console.WriteLine("You can not request cash");
+        }
+
+        public string GetStateName()
+        {
+            return nameof(NoCashState);
         }
     }
 }

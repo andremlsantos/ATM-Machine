@@ -1,5 +1,4 @@
 ﻿using ATM.Context;
-using State.State;
 using System;
 
 namespace ATM.State
@@ -41,6 +40,11 @@ namespace ATM.State
         {
             Console.WriteLine("You can not request money, because there is no card");
             Console.WriteLine("Enter a card first");
+        }
+
+        public string GetStateName()
+        {
+            return nameof(NoCardState);
         }
     }
 }

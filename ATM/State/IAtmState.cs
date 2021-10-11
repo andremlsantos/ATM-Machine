@@ -1,4 +1,4 @@
-﻿namespace State.State
+﻿namespace ATM.State
 {
     /*
      * All the actions a user can perform
@@ -9,5 +9,6 @@
         public void EjectCard();
         public void InsertPin(int pin);
         public void RequestCash(int amount);
+        public string GetStateName();
     }
 }

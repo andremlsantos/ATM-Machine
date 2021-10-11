@@ -1,10 +1,10 @@
-﻿using ATM.State;
-using State.State;
+﻿using ATM.Proxy;
+using ATM.State;
 using System;
 
 namespace ATM.Context
 {
-    public class AtmMachine : IAtmState
+    public class AtmMachine : IAtmData
     {
         // All possible states
         public IAtmState HasCard { get; private set; }
@@ -13,10 +13,9 @@ namespace ATM.Context
         public IAtmState NoCash { get; private set; }
         public IAtmState CurrentState { get; set; }
 
-        public bool IsPinCorrect { get; set; }
         public int Balance { get; private set; }
 
-        public AtmMachine(int initialBalance)
+        public AtmMachine(int initialBalance = 5000)
         {
             Balance = initialBalance;
 
@@ -68,6 +67,16 @@ namespace ATM.Context
         public void SetBalance(int value)
         {
             Balance = value;
+        }
+
+        public IAtmState GetData()
+        {
+            return CurrentState;
+        }
+
+        public int GetBalance()
+        {
+            return Balance;
         }
     }
 }

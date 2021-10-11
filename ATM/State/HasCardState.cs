@@ -1,5 +1,4 @@
 ﻿using ATM.Context;
-using State.State;
 using System;
 
 namespace ATM.State
@@ -40,13 +39,11 @@ namespace ATM.State
             {
                 Console.WriteLine("Correct pin");
 
-                _atmMachine.IsPinCorrect = true;
                 _atmMachine.CurrentState = _atmMachine.HasCorrectPin;
             }
             else
             {
                 Console.WriteLine("Wrong pin");
-                _atmMachine.IsPinCorrect = false;
 
                 Console.WriteLine("Card ejected");
                 _atmMachine.CurrentState = _atmMachine.NoCard;
@@ -61,6 +58,11 @@ namespace ATM.State
         public void RequestCash(int amount)
         {
             Console.WriteLine("Enter the pin first");
+        }
+
+        public string GetStateName()
+        {
+            return nameof(HasCardState);
         }
     }
 }
