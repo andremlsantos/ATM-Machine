@@ -18,7 +18,7 @@ namespace ATM.Proxy
             // lazy initialization
             _atmMachine ??= new AtmMachine(new AtmStateFactory());
 
-            return _atmMachine.Current;
+            return _atmMachine.CurrentState;
         }
 
         public int GetBalance()
