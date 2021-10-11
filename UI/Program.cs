@@ -1,4 +1,4 @@
-﻿using State.Context;
+﻿using ATM.Context;
 using System;
 
 namespace UI
@@ -7,6 +7,7 @@ namespace UI
     {
         static void Main(string[] args)
         {
+            StatePattern();
         }
 
         static void StatePattern()

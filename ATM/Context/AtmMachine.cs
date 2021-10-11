@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ATM.State;
 using State.State;
+using System;
 
-namespace State.Context
+namespace ATM.Context
 {
     public class AtmMachine : IAtmState
     {

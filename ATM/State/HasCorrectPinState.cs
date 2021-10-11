@@ -1,7 +1,8 @@
-﻿using System;
-using State.Context;
+﻿using ATM.Context;
+using State.State;
+using System;
 
-namespace State.State
+namespace ATM.State
 {
     public class HasCorrectPinState : IAtmState
     {
