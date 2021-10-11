@@ -1,13 +1,14 @@
 ﻿using ATM.Context;
+using ATM.Factory;
 using System;
 
 namespace ATM.State
 {
-    public class HasCorrectPinState : IAtmState
+    public class HasCorrectPin : IAtmState
     {
         private readonly AtmMachine _atmMachine;
 
-        public HasCorrectPinState(AtmMachine atmMachine)
+        public HasCorrectPin(AtmMachine atmMachine)
         {
             _atmMachine = atmMachine;
         }
@@ -21,7 +22,7 @@ namespace ATM.State
         {
             Console.WriteLine("Card Ejected");
 
-            _atmMachine.CurrentState = _atmMachine.NoCard;
+            _atmMachine.SetCurrentState(StateType.NoCard);
         }
 
         public void InsertPin(int pin)
@@ -39,7 +40,7 @@ namespace ATM.State
                 Console.WriteLine("You do not have enough money");
                 Console.WriteLine("Card ejected");
 
-                _atmMachine.CurrentState = _atmMachine.NoCard;
+                _atmMachine.SetCurrentState(StateType.NoCard);
             }
             else
             {
@@ -47,14 +48,15 @@ namespace ATM.State
 
                 var newBalance = _atmMachine.Balance - amount;
                 Console.WriteLine($"Updating the balance to {newBalance}");
-                _atmMachine.SetBalance(newBalance);
+
+                _atmMachine.Balance = newBalance;
 
                 Console.WriteLine("Card ejected");
-                _atmMachine.CurrentState = _atmMachine.NoCard;
+                _atmMachine.SetCurrentState(StateType.NoCard);
 
                 if (IsOutBalance())
                 {
-                    _atmMachine.CurrentState = _atmMachine.NoCash;
+                    _atmMachine.SetCurrentState(StateType.NoCash);
                 }
             }
         }
@@ -67,11 +69,6 @@ namespace ATM.State
         private bool IsInvalidAmount(int amount)
         {
             return amount > _atmMachine.Balance;
-        }
-
-        public string GetStateName()
-        {
-            return nameof(HasCorrectPinState);
         }
     }
 }

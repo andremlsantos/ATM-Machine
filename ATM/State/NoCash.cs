@@ -3,11 +3,11 @@ using System;
 
 namespace ATM.State
 {
-    public class NoCashState : IAtmState
+    public class NoCash : IAtmState
     {
         private readonly AtmMachine _atmMachine;
 
-        public NoCashState(AtmMachine atmMachine)
+        public NoCash(AtmMachine atmMachine)
         {
             _atmMachine = atmMachine;
         }
@@ -34,11 +34,6 @@ namespace ATM.State
         {
             Console.WriteLine("You do not have enough money");
             Console.WriteLine("You can not request cash");
-        }
-
-        public string GetStateName()
-        {
-            return nameof(NoCashState);
         }
     }
 }

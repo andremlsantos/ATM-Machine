@@ -1,9 +1,10 @@
 ﻿using ATM.Context;
+using ATM.Factory;
 using ATM.State;
 
 namespace ATM.Proxy
 {
-    public class AtmProxy : IAtmData
+    public class AtmProxy : IAtmProxy
     {
         private AtmMachine _atmMachine;
 
@@ -15,15 +16,15 @@ namespace ATM.Proxy
         public IAtmState GetData()
         {
             // lazy initialization
-            _atmMachine ??= new AtmMachine(2000);
+            _atmMachine ??= new AtmMachine(new AtmStateFactory());
 
-            return _atmMachine.CurrentState;
+            return _atmMachine.Current;
         }
 
         public int GetBalance()
         {
             // lazy initialization
-            _atmMachine ??= new AtmMachine(2000);
+            _atmMachine ??= new AtmMachine(new AtmStateFactory());
 
             return _atmMachine.Balance;
         }

@@ -1,13 +1,14 @@
 ﻿using ATM.Context;
+using ATM.Factory;
 using System;
 
 namespace ATM.State
 {
-    public class NoCardState : IAtmState
+    public class NoCard : IAtmState
     {
         private readonly AtmMachine _atmMachine;
 
-        public NoCardState(AtmMachine atmMachine)
+        public NoCard(AtmMachine atmMachine)
         {
             _atmMachine = atmMachine;
         }
@@ -21,7 +22,7 @@ namespace ATM.State
             Console.WriteLine("Card Entered");
             Console.WriteLine("Please enter a pin");
 
-            _atmMachine.CurrentState = _atmMachine.HasCard;
+            _atmMachine.SetCurrentState(StateType.HasCard);
         }
 
         public void EjectCard()
@@ -40,11 +41,6 @@ namespace ATM.State
         {
             Console.WriteLine("You can not request money, because there is no card");
             Console.WriteLine("Enter a card first");
-        }
-
-        public string GetStateName()
-        {
-            return nameof(NoCardState);
         }
     }
 }

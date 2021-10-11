@@ -1,4 +1,5 @@
 ﻿using ATM.Context;
+using ATM.Factory;
 using ATM.Proxy;
 using System;
 
@@ -23,13 +24,13 @@ namespace UI
             Console.WriteLine($"The current balance is {balance}");
 
             var currentState = proxy.GetData();
-            Console.WriteLine($"The current state is {currentState.GetStateName()}");
         }
 
         static AtmMachine RealAtmUseCase()
         {
-            const int initialBalance = 15000;
-            var atm = new AtmMachine(initialBalance);
+
+            var factory = new AtmStateFactory();
+            var atm = new AtmMachine(factory);
 
             atm.InsertCard();
             Console.WriteLine();
@@ -57,6 +58,7 @@ namespace UI
 
             var actualBalance = atm.Balance;
 
+            const int initialBalance = 15000;
             Console.WriteLine($"The new Balance should be {initialBalance - amountToWithdrawal}");
             Console.WriteLine($"The actual Balance is {actualBalance}");
 

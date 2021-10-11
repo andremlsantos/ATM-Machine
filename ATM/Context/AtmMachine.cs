@@ -1,42 +1,46 @@
-﻿using ATM.Proxy;
+﻿using ATM.Factory;
+using ATM.Proxy;
 using ATM.State;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ATM.Context
 {
-    public class AtmMachine : IAtmData
+    public class AtmMachine : IAtmProxy
     {
-        // All possible states
-        public IAtmState HasCard { get; private set; }
-        public IAtmState NoCard { get; private set; }
-        public IAtmState HasCorrectPin { get; private set; }
-        public IAtmState NoCash { get; private set; }
-        public IAtmState CurrentState { get; set; }
+        private readonly AtmStateFactory _factory;
+        private readonly Dictionary<StateType, IAtmState> _states = new();
+        public IAtmState CurrentState { get; private set; }
+        public int Balance { get; set; } = 50000;
 
-        public int Balance { get; private set; }
-
-        public AtmMachine(int initialBalance = 5000)
+        public AtmMachine(AtmStateFactory factory)
         {
-            Balance = initialBalance;
+            _factory = factory;
 
-            InitStates();
-
-            CurrentState = NoCard;
+            CreateStates();
+            SetCurrentState(StateType.NoCard);
 
             if (IsOutOfBalance())
-            {
-                CurrentState = NoCash;
-            }
+                SetCurrentState(StateType.NoCash);
 
             Console.WriteLine("Welcome dear customer");
         }
 
-        private void InitStates()
+        private void CreateStates()
         {
-            HasCard = new HasCardState(this);
-            NoCard = new NoCardState(this);
-            HasCorrectPin = new HasCorrectPinState(this);
-            NoCash = new NoCashState(this);
+            var possibleAtmTypes = Enum.GetValues(typeof(StateType))
+                .Cast<StateType>();
+
+            foreach (var type in possibleAtmTypes)
+            {
+                _states.Add(type, _factory.Create(type, this));
+            }
+        }
+
+        public void SetCurrentState(StateType type)
+        {
+            CurrentState = _states[type];
         }
 
         private bool IsOutOfBalance()
@@ -44,6 +48,9 @@ namespace ATM.Context
             return Balance < 0;
         }
 
+        /*
+         * State
+         */
         public void InsertCard()
         {
             CurrentState.InsertCard();
@@ -64,11 +71,9 @@ namespace ATM.Context
             CurrentState.RequestCash(amount);
         }
 
-        public void SetBalance(int value)
-        {
-            Balance = value;
-        }
-
+        /*
+         * Proxy
+         */
         public IAtmState GetData()
         {
             return CurrentState;

@@ -1,4 +1,5 @@
 ﻿using ATM.Context;
+using ATM.Factory;
 using System;
 
 namespace ATM.State
@@ -6,12 +7,12 @@ namespace ATM.State
     /*
      * The card is already inside the machine
      */
-    public class HasCardState : IAtmState
+    public class HasCard : IAtmState
     {
         private readonly AtmMachine _atmMachine;
         private static int CorrectPin => 1234;
 
-        public HasCardState(AtmMachine atmMachine)
+        public HasCard(AtmMachine atmMachine)
         {
             _atmMachine = atmMachine;
         }
@@ -26,7 +27,7 @@ namespace ATM.State
         {
             Console.WriteLine("Card Ejected");
 
-            _atmMachine.CurrentState = _atmMachine.NoCard;
+            _atmMachine.SetCurrentState(StateType.NoCard);
         }
 
         /*
@@ -39,14 +40,14 @@ namespace ATM.State
             {
                 Console.WriteLine("Correct pin");
 
-                _atmMachine.CurrentState = _atmMachine.HasCorrectPin;
+                _atmMachine.SetCurrentState(StateType.HasCorrectPin);
             }
             else
             {
                 Console.WriteLine("Wrong pin");
 
                 Console.WriteLine("Card ejected");
-                _atmMachine.CurrentState = _atmMachine.NoCard;
+                _atmMachine.SetCurrentState(StateType.NoCard);
             }
         }
 
@@ -58,11 +59,6 @@ namespace ATM.State
         public void RequestCash(int amount)
         {
             Console.WriteLine("Enter the pin first");
-        }
-
-        public string GetStateName()
-        {
-            return nameof(HasCardState);
         }
     }
 }

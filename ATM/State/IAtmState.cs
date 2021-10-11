@@ -9,6 +9,5 @@
         public void EjectCard();
         public void InsertPin(int pin);
         public void RequestCash(int amount);
-        public string GetStateName();
     }
 }
